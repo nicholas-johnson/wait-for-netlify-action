@@ -9,6 +9,10 @@ const waitForUrl = async (url, MAX_TIMEOUT, { headers }) => {
       await axios.get(url, { headers });
       return;
     } catch (e) {
+      if (e.response && e.response.status === 401) {
+        console.log("Received 401 Unauthorized, proceeding...");
+        return;
+      }
       console.log("Url unavailable, retrying...");
       await new Promise((r) => setTimeout(r, 2000));
     }
